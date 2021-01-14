@@ -1,0 +1,122 @@
+{
+  "openapi" : "3.0.0",
+  "servers" : [ {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/b9133/Customer/1.0.0"
+  }, {
+    "description" : "Customer List API",
+    "url" : "https://sandbox.beatroute.io/v1"
+  } ],
+  "info" : {
+    "description" : "API to retrive customer list from BeatRoute",
+    "version" : "1.0.0",
+    "title" : "Customer API",
+    "contact" : {
+      "email" : "developer@beatroute.io"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "paths" : {
+    "/customer/index" : {
+      "post" : {
+        "tags" : [ "developers" ],
+        "summary" : "searches customer",
+        "operationId" : "index",
+        "description" : "By passing in the appropriate options, you can search for\navailable customer in the system\n",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "key",
+          "description" : "Authentication Key for communication",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "date",
+          "description" : "pass an optional date string for looking up customer updated/created after given date",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "page",
+          "description" : "number of records to skip for pagination",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : 0
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/item"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "item" : {
+        "type" : "object",
+        "required" : [ "id", "name", "manufacturer", "releaseDate" ],
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "uuid",
+            "example" : "d290f1ee-6c54-4b01-90e6-d701748f0851"
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "Widget Adapter"
+          },
+          "releaseDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2016-08-29T09:12:33.001Z"
+          },
+          "manufacturer" : {
+            "$ref" : "#/components/schemas/customFields"
+          }
+        }
+      },
+      "customFields" : {
+        "required" : [ "name" ],
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : "ACME Corporation"
+          },
+          "homePage" : {
+            "type" : "string",
+            "format" : "url",
+            "example" : "https://www.acme-corp.com"
+          },
+          "phone" : {
+            "type" : "string",
+            "example" : "408-867-5309"
+          }
+        },
+        "type" : "object"
+      }
+    }
+  }
+}
